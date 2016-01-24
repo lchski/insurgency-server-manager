@@ -9,8 +9,14 @@ class InsurgencyManager
   def initialize(digital_ocean_client)
     @client = digital_ocean_client
     @snapshot_id = get_snapshot_id()
+    @vps = nil
 
     check_for_vps_and_set_if_found()
+
+    # If our VPS exists, do some things.
+    if (@vps != nil)
+      update_duckdns()
+    end
   end
 
   def get_snapshot_id()
@@ -41,7 +47,7 @@ class InsurgencyManager
     return @vps.networks.v4[0].ip_address
   end
 
-  def update_duckdns(new_ip)
+  def update_duckdns(new_ip=get_vps_ip())
     Curl::Easy.perform("https://www.duckdns.org/update?domains=where-napoleon-died&token=#{ENV['DUCKDNS_TOKEN']}&ip=#{new_ip}")
   end
 end
