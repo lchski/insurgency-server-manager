@@ -35,6 +35,7 @@ GEM
     net-ssh (2.9.2)
     resource_kit (0.1.4)
       addressable (~> 2.3.6)
+    taf2-curb (0.5.4.0)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -51,3 +52,4 @@ DEPENDENCIES
   dotenv
   droplet_kit
   net-ssh
+  taf2-curb
