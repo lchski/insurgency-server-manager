@@ -22,7 +22,7 @@ class InsurgencyManager
     return false
   end
 
-  def check_for_server()
+  def check_for_vps()
     droplets = @client.droplets.all
     droplets.each do |droplet|
       if droplet.name == "insurgency-server"
