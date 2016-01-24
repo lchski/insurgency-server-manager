@@ -18,6 +18,8 @@ class InsurgencyManager
         return image.id
       end
     end
+
+    return false
   end
 
   def check_for_server()
