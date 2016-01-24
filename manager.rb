@@ -9,6 +9,8 @@ class InsurgencyManager
   def initialize(digital_ocean_client)
     @client = digital_ocean_client
     @snapshot_id = get_snapshot_id()
+
+    check_for_vps_and_set_if_found()
   end
 
   def get_snapshot_id()
@@ -22,15 +24,21 @@ class InsurgencyManager
     return false
   end
 
-  def check_for_vps()
+  def check_for_vps_and_set_if_found()
     droplets = @client.droplets.all
     droplets.each do |droplet|
       if droplet.name == "insurgency-server"
+        @vps = droplet
+
         return true
       end
     end
 
     return false
+  end
+
+  def get_vps_ip()
+    return @vps.networks.v4[0].ip_address
   end
 
   def update_duckdns(new_ip)
