@@ -43,6 +43,19 @@ class InsurgencyManager
     return false
   end
 
+  def create_vps()
+    if (@vps == nil)
+      droplet = DropletKit::Droplet.new(name: 'insurgency-server', region: 'tor1', size: '1gb', image: @snapshot_id)
+      @vps = @client.droplets.create(droplet)
+    end
+  end
+
+  def destroy_vps()
+    if (@vps != nil)
+      @client.droplets.delete(id: @vps.id)
+    end
+  end
+
   def get_vps_ip()
     return @vps.networks.v4[0].ip_address
   end
