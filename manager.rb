@@ -83,7 +83,22 @@ class InsurgencyManager
     end
     puts "Starting the Insurgency server..."
     Net::SSH.start(get_vps_ip(), 'insserver') do |ssh|
-      ssh.exec!("./insserver start")
+      output = ssh.exec!("./insserver start")
+      puts output
+    end
+  end
+
+  def stop_server()
+    Net::SSH.start(get_vps_ip(), 'insserver') do |ssh|
+      output = ssh.exec!("./insserver stop")
+      puts output
+    end
+  end
+
+  def restart_server()
+    Net::SSH.start(get_vps_ip(), 'insserver') do |ssh|
+      output = ssh.exec!("./insserver restart")
+      puts output
     end
   end
 
@@ -93,3 +108,4 @@ class InsurgencyManager
 end
 
 im = InsurgencyManager.new(DropletKit::Client.new(access_token: ENV['DO_TOKEN']))
+im.send(ARGV[0])
