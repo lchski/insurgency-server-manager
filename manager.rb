@@ -71,9 +71,17 @@ class InsurgencyManager
   end
 
   def start_server()
-    Net::SSH.start(get_vps_ip(), 'root') do |ssh|
-      ssh.exec!("echo \"INS_SERVER_IP=\"#{get_vps_ip()}\"\" >> /etc/environment")
+    begin
+      puts "Trying to set the environment variable..."
+      Net::SSH.start(get_vps_ip(), 'root') do |ssh|
+        ssh.exec!("echo \"INS_SERVER_IP=\"#{get_vps_ip()}\"\" >> /etc/environment")
+      end
+    rescue Net::SSH::HostKeyMismatch => e
+      puts "The host key mismatched! Remembering and retrying."
+      e.remember_host!
+      retry
     end
+    puts "Starting the Insurgency server..."
     Net::SSH.start(get_vps_ip(), 'insserver') do |ssh|
       ssh.exec!("./insserver start")
     end
