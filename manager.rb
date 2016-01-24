@@ -70,6 +70,15 @@ class InsurgencyManager
     return @vps.networks.v4[0].ip_address
   end
 
+  def start_server()
+    Net::SSH.start(get_vps_ip(), 'root') do |ssh|
+      ssh.exec!("echo \"INS_SERVER_IP=\"#{get_vps_ip()}\"\" >> /etc/environment")
+    end
+    Net::SSH.start(get_vps_ip(), 'insserver') do |ssh|
+      ssh.exec!("./insserver start")
+    end
+  end
+
   def update_duckdns(new_ip=get_vps_ip())
     Curl::Easy.perform("https://www.duckdns.org/update?domains=where-napoleon-died&token=#{ENV['DUCKDNS_TOKEN']}&ip=#{new_ip}")
   end
