@@ -1,0 +1,1 @@
+Ruby script to manage [an Insurgency server](https://gameservermanagers.com/lgsm/insserver/) running on [a DigitalOcean VPS](digitalocean.com), with a dynamic URL managed by [DuckDNS](https://www.duckdns.org).
