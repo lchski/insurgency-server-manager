@@ -9,6 +9,7 @@ class InsurgencyManager
   def initialize(digital_ocean_client)
     @client = digital_ocean_client
     @snapshot_id = get_snapshot_id()
+    @ssh_id = get_ssh_id()
     @vps = nil
 
     check_for_vps_and_set_if_found()
@@ -30,6 +31,15 @@ class InsurgencyManager
     return false
   end
 
+  def get_ssh_id()
+    keys = @client.ssh_keys.all()
+    keys.each do |key|
+      if key.name == "Personal SSH Key"
+        return key.id
+      end
+    end
+  end
+
   def check_for_vps_and_set_if_found()
     droplets = @client.droplets.all
     droplets.each do |droplet|
@@ -45,7 +55,7 @@ class InsurgencyManager
 
   def create_vps()
     if (@vps == nil)
-      droplet = DropletKit::Droplet.new(name: 'insurgency-server', region: 'tor1', size: '1gb', image: @snapshot_id)
+      droplet = DropletKit::Droplet.new(name: 'insurgency-server', region: 'tor1', size: '1gb', ssh_keys: [@ssh_id], image: @snapshot_id)
       @vps = @client.droplets.create(droplet)
     end
   end
