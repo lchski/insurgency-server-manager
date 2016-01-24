@@ -20,6 +20,17 @@ class InsurgencyManager
     end
   end
 
+  def check_for_server()
+    droplets = @client.droplets.all
+    droplets.each do |droplet|
+      if droplet.name == "insurgency-server"
+        return true
+      end
+    end
+
+    return false
+  end
+
   def update_duckdns(new_ip)
     Curl::Easy.perform("https://www.duckdns.org/update?domains=where-napoleon-died&token=#{ENV['DUCKDNS_TOKEN']}&ip=#{new_ip}")
   end
