@@ -105,7 +105,7 @@ class InsurgencyManager
   end
 
   def update_duckdns(new_ip=get_vps_ip())
-    Curl::Easy.perform("https://www.duckdns.org/update?domains=where-napoleon-died&token=#{ENV['DUCKDNS_TOKEN']}&ip=#{new_ip}")
+    Curl::Easy.perform("https://www.duckdns.org/update?domains=where-napoleon-lost&token=#{ENV['DUCKDNS_TOKEN']}&ip=#{new_ip}")
   end
 end
 
